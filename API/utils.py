@@ -9,7 +9,7 @@ def readFile(stream, token):
         f.close()
         return str
     except Exception:
-        return "Log couldn't be found."
+        return "Log for " + token + "_" + stream + ".log" + " couldn't be found."
 
 
 def validUser(user: dict):

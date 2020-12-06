@@ -15,6 +15,8 @@ CORS(app)
 db = MyDB('api_db.json')
 jwt = MyJsonWebToken()
 
+process = ({})
+
 @app.route('/', methods=['GET'])
 def home():
     return jsonify({'answer': 'pong'}), 200
@@ -42,7 +44,7 @@ def connect():
     return jsonify({'answer': 'success', 'token': jwt.create(user['username']), 'toast': 'Login success'}), 200
 
 
-@app.route('/delete', methods=['post'])
+@app.route('/delete', methods=['DELETE'])
 def delAccount():
     token = request.headers.get('Authorization')
     ans, user = tokenToUser(db, jwt, token)
@@ -52,26 +54,85 @@ def delAccount():
     return jsonify({'answer': 'success', 'toast': 'User deleted'}), 200
     
 
+@app.route('/token', methods=['PUT'])
+def setToken():
+    token = request.headers.get('Authorization')
+    twitch_token = request.json['token']
+    ans, user = tokenToUser(db, jwt, token)
+    if not ans:
+        return jsonify({'answer': 'failure', 'toast': user}), 400
+    if not db.setUserToken(user['username'], twitch_token):
+        return jsonify({'answer': 'failure', 'toast': 'Impossible'}), 400
+    return jsonify({'answer': 'success', 'toast': 'token updated'})
 
-# TODO : Redo this method, only made now to test, no even jsonify
-@app.route('/token', methods=['GET'])
-def getToken():
-    return db.getUserToken('jean')
 
-w
-@app.route('/start', methods=['GET'])
+@app.route('/start', methods=['POST'])
 def start():
-    subprocess.Popen(["python.exe", "API/poc_selenium.py", "token", "stream"])
+    global process
+    token = request.headers.get('Authorization')
+    stream = request.args['stream']
+    if stream is None or len(stream) == 0:
+        return jsonify({'answer': 'failure', 'toast': 'stream name missing.'}), 400
+    ans, user = tokenToUser(db, jwt, token)
+    if not ans:
+        return jsonify({'answer': 'failure', 'toast': user}), 400
+    if not db.addWatcher(user['username'], stream):
+        return jsonify({'answer': 'failure', 'toast': 'Already watching this stream.'}), 400
+    watcher = db.getWatcher(user['username'], stream)
+    process[watcher.doc_id] = subprocess.Popen(["python.exe", "API/poc_selenium.py", user['username'], stream])
     return jsonify(answer= "Process created"), 200
+
+
+@app.route('/stop', methods=['POST'])
+def stop():
+    global process
+    token = request.headers.get('Authorization')
+    stream = request.args['stream']
+    if stream is None or len(stream) == 0:
+        return jsonify({'answer': 'failure', 'toast': 'stream name missing.'}), 400
+    ans, user = tokenToUser(db, jwt, token)
+    if not ans:
+        return jsonify({'answer': 'failure', 'toast': user}), 400
+    if not db.watcherExist(user['username'], stream):
+        return jsonify({'answer': 'failure', 'toast': 'Impossible.'}), 400
+    watcher = db.getWatcher(user['username'], stream)
+    process[watcher.doc_id].kill()
+    db.deleteWatcher(user['username'], stream)
+    return jsonify({'answer': 'success', 'toast': 'Process stopped'}), 200
+
+
+@app.route('/watchers', methods=['GET'])
+def watchers():
+    token = request.headers.get('Authorization')
+    ans, user = tokenToUser(db, jwt, token)
+    if not ans:
+        return jsonify({'answer': 'failure', 'toast': user}), 400
+    l = db.getAllByUser(user['username'])
+    return jsonify(answer='success', object=l), 200
 
 
 @app.route('/info', methods=['GET'])
 def info():
-    stream = "stream"
-    token = "token"
-    return jsonify(readFile(stream, token)), 200
-    
+    token = request.headers.get('Authorization')
+    stream = request.args['stream']
+    if stream is None or len(stream) == 0:
+        return jsonify({'answer': 'failure', 'toast': 'stream name missing.'}), 400
+    ans, user = tokenToUser(db, jwt, token)
+    if not ans:
+        return jsonify({'answer': 'failure', 'toast': user})
+    return jsonify(answer='success', log=readFile(stream, user['username'])), 200
 
+
+@app.route('/logs', methods=['GET'])
+def alllogs():
+    token = request.headers.get('Authorization')
+    stream = request.args['stream']
+    if stream is None or len(stream) == 0:
+        return jsonify({'answer': 'failure', 'toast': 'stream name missing.'}), 400
+    ans, user = tokenToUser(db, jwt, token)
+    if not ans:
+        return jsonify({'answer': 'failure', 'toast': user})
+    return jsonify(answer='success', logs=readFile(stream+'_long', user['username'])), 200
 
 
 def signal_handler(sig, frame):

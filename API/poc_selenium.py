@@ -1,4 +1,4 @@
-import sys, os, signal, time
+import sys, os, signal, time, atexit
 
 debug = True
 
@@ -7,7 +7,7 @@ log_directory = "logs/"
 ## End settings
 
 ## Variables
-token = sys.argv[1]
+username = sys.argv[1]
 stream = sys.argv[2]
 log = "file"
 log_long = "file"
@@ -71,8 +71,8 @@ def main():
     # Start bot
     global log, log_long, log_directory
     create_folder(log_directory)
-    log = create_file(log_directory + token + "_" + stream + ".log")
-    log_long = create_file(log_directory + token + "_" + stream + "_long.log")
+    log = create_file(log_directory + username + "_" + stream + ".log")
+    log_long = create_file(log_directory + username + "_" + stream + "_long.log")
     bot()
 
 
@@ -86,3 +86,4 @@ if __name__ == "__main__":
 signal.signal(signal.SIGINT, signal_handler)
 signal.signal(signal.SIGSEGV, signal_handler)
 signal.signal(signal.SIGTERM, signal_handler)
+atexit.register(end)

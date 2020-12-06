@@ -37,6 +37,17 @@ class MyDB:
             return None
 
 
+    def setUserToken(self, name, token):
+        if not self.userExist(name):
+            return False
+        try:
+            q = Query()
+            self.__userTable.update({'token': token}, q.username == name)
+        except Exception:
+            return False
+        return True
+
+
     def getUser(self, name):
         try :
             q = Query()
@@ -90,6 +101,15 @@ class MyDB:
         return True
 
     
+    def getWatcher(self, name: str, stream: str):
+        try :
+            q = Query()
+            return self.__watchTable.get((q.username == name) 
+                                        & (q.stream == stream))
+        except Exception:
+            return None
+
+
     def deleteWatcher(self, username: str, stream: str):
         if not self.watcherExist(username, stream):
             return False
@@ -111,9 +131,10 @@ def test_user(db: MyDB):
     assert db.addUser({'username': 'junit', 'password': 'key', 'token' : 'tok'}) == None
     assert db.userExist('junit') == True
     assert db.getUser('junit') != None
-    assert db.getUserToken('junit') == 'tok'
+    assert db.setUserToken('junit', 'new token') == True
+    assert db.getUserToken('junit') == 'new token'
     assert db.addUser({'username': 'junit', 'password': 'key', 'token' : 'tok'}) == 'User already exist.'
-    assert db.deleteUser('junit')
+    assert db.deleteUser('junit') == True
     assert db.userExist('junit') == False
 
 

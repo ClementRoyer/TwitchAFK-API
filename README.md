@@ -51,13 +51,13 @@
   - [x] Login/Create/Delete account, route.
     - [x] Generate JWT
     - [x] Check if username already taken
-  - [ ] Set/Refresh user's twitch token, route.
+  - [x] Set/Refresh user's twitch token, route.
   - [x] Start viewing, route.
-    - [ ] streamer's channel in url.
+    - [x] streamer's channel in url.
   - [x] Get last update of the bot, route.
   - [x] Get full log of the bot.
     - [ ] Maybe extract it to CSV
-  - [ ] Stop the bot.
+  - [x] Stop the bot.
 
 - Database (using tinydb (json file))
   - [x] User table
@@ -67,7 +67,6 @@
   - [x] Watch table
     - username
     - stream
-    - [ ] ? process id
 
 - Cool feature
   - [ ] Emergency stop, click on button and stop all bots of the server.
