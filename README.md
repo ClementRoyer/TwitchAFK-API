@@ -11,6 +11,8 @@
 <h4 align="center">My small <a href="" target="_blank">Description</a>.</h4>
 
 <div align="center"><sub> Version <a href="version">TOO EARLY</a></sub></div>
+<br>
+<div align="center"><sub>Because this application use personal information like Twitch token, this is not destined to public deployment. It's better to use it on a private server.</sub></div>
 
 <br>
 
@@ -30,30 +32,43 @@
 </div>
 
 
-## Table
+## Todo
 
-Interesting stuff here
+- viewer bot
+  - [x] argv[1] = streamer argv[2] = token
+  - [x] Create file `$token_$streamer.log` (could be a filename too long)
+    - To get current bot logs.
+  - [x] Create file `$token_$streamer_log.log` (could be a filename too long)
+    - To get only the last log of the current bot.
+  - [ ] to json {coins: , bet_placed: , bet_won: , bet_balance: , auto_collect_balance: }
+  - [ ] View stream
+  - [ ] Collect coins & chest
+  - [ ] Find bet & place bet
+    - [ ] sleep until last moment to make sure bet on the best odd
+  - [ ] Find when a bet end, get stats
 
-``` python
-print("Hello world")
-```
+- API
+  - [ ] Login/Create account, route.
+  - [ ] Set/Refresh user's twitch token, route.
+  - [x] Start viewing, route.
+    - [ ] streamer channel in url.
+  - [x] Get last update of the bot, route.
+  - [x] Get full log of the bot.
+    - [ ] Maybe extract it to CSV
+  - [ ] Stop the bot.
 
-<details>
-<summary>annoying stuff here</summary>
-</details>
-
-
-### of
-
-
-#### content
-
-## Proof
-
-### of
-
-#### concept
-
+- Cool feature
+  - [ ] Be able to get usable stats out of the bot
+    - [ ] View count
+    - [ ] Stream title
+    - [ ] all bets logs
+    - [ ] bet balance over time
+    - [ ] more
+  - [ ] Be able to chose the bet strategy
+    - [ ] Greedy : bet x% of your balance to highest odd
+    - [ ] Greedy-fix : bet X coins to highest odd (take balance if X > balance)
+    - [ ] moderate : bet x% of your balance to lower odd
+    - [ ] moderate-fix : bet X coins to lower odd (take balance if X > balance)
 
 
 <!-- footer -->
