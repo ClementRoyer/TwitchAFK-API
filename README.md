@@ -48,9 +48,9 @@
   - [ ] Find when a bet end, get stats
 
 - API
-  - [ ] Login/Create account, route.
-    - [ ] Generate JWT
-    - [ ] Check if username already taken
+  - [x] Login/Create/Delete account, route.
+    - [x] Generate JWT
+    - [x] Check if username already taken
   - [ ] Set/Refresh user's twitch token, route.
   - [x] Start viewing, route.
     - [ ] streamer's channel in url.
@@ -60,10 +60,14 @@
   - [ ] Stop the bot.
 
 - Database (using tinydb (json file))
-  - [ ] User table
+  - [x] User table
     - username
     - password
     - twitch token
+  - [x] Watch table
+    - username
+    - stream
+    - [ ] ? process id
 
 - Cool feature
   - [ ] Emergency stop, click on button and stop all bots of the server.
