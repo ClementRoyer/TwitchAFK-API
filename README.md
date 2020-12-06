@@ -22,8 +22,8 @@
 
 <!-- TOC -->
 <p align="center">
-  <a href="#table">Table</a> •
-  <a href="#proof">Proof</a>
+  <a href="#todo">Todo</a>
+  <!-- • <a href="#proof"></a> -->
 </p>
 
 <!-- omit in toc -->
@@ -49,15 +49,27 @@
 
 - API
   - [ ] Login/Create account, route.
+    - [ ] Generate JWT
+    - [ ] Check if username already taken
   - [ ] Set/Refresh user's twitch token, route.
   - [x] Start viewing, route.
-    - [ ] streamer channel in url.
+    - [ ] streamer's channel in url.
   - [x] Get last update of the bot, route.
   - [x] Get full log of the bot.
     - [ ] Maybe extract it to CSV
   - [ ] Stop the bot.
 
+- Database (using tinydb (json file))
+  - [ ] User table
+    - username
+    - password
+    - twitch token
+
 - Cool feature
+  - [ ] Emergency stop, click on button and stop all bots of the server.
+    - Dont have any use case, just feal like could be helpfull.
+  - [ ] Bet able to set different key for different viewer
+    - In case someone is ban one stream and use an other account to watch it he cas put both in this app.
   - [ ] Be able to get usable stats out of the bot
     - [ ] View count
     - [ ] Stream title
