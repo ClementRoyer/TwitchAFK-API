@@ -41,9 +41,9 @@
   - [x] Create file `$token_$streamer_log.log` (could be a filename too long)
     - To get only the last log of the current bot.
   - [ ] to json {coins: , bet_placed: , bet_won: , bet_balance: , auto_collect_balance: }
-  - [ ] View stream
-  - [ ] Collect coins & chest
-  - [ ] Find bet & place bet
+  - [x] View stream
+  - [x] Collect coins & chest
+  - [x] Find bet & place bet
     - [ ] sleep until last moment to make sure bet on the best odd
   - [ ] Find when a bet end, get stats
 
@@ -85,6 +85,12 @@
     - [ ] moderate : bet x% of your balance to lower odd
     - [ ] moderate-fix : bet X coins to lower odd (take balance if X > balance)
 
+
+- links
+  - https://tedboy.github.io/flask/_modules/flask/wrappers.html#Request
+  - https://www.programcreek.com/python/?action=search_nlp&CodeExample=request+args&submit=Search
+  - https://tinydb.readthedocs.io/en/stable/usage.html
+  - https://tedboy.github.io/flask/interface_api.incoming_request_data.html#flask.request
 
 <!-- footer -->
 

@@ -8,8 +8,6 @@ from MyJWT import MyJsonWebToken
 import json, os, subprocess, signal, atexit
 
 
-DEBUG = True
-
 app = Flask(__name__)
 CORS(app)
 db = MyDB('api_db.json')
@@ -79,7 +77,7 @@ def start():
     if not db.addWatcher(user['username'], stream):
         return jsonify({'answer': 'failure', 'toast': 'Already watching this stream.'}), 400
     watcher = db.getWatcher(user['username'], stream)
-    process[watcher.doc_id] = subprocess.Popen(["python.exe", "API/poc_selenium.py", user['username'], stream])
+    process[watcher.doc_id] = subprocess.Popen(["python.exe", "API/watcher.py", user['username'], stream, user['token']])
     return jsonify(answer= "Process created"), 200
 
 
@@ -140,12 +138,15 @@ def signal_handler(sig, frame):
 
 
 def end():
-    global DEBUG
-    print("API ENDING")
     try:
         db.end(delete = DEBUG)
     except Exception:
         pass
+    for id, _stream in process.items():
+        try:
+            _stream.stop()
+        except Exception:
+            pass
 
 
 
